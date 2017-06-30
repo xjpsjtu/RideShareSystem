@@ -2,27 +2,19 @@ package rideshare;
 
 public class Passenger {
 	int num;
-	int startTime;
-	int endTime;
-	Pos startPoint;
-	Pos endPoint;
+	Request request;
+	int status; // status = 0: free, status = 1: matched, status = 2: on the car, status = 4: finished
+	int budget;
 	
-	public Passenger(int num, int startTime, int endTime, Pos startPoint, Pos endPoint){
+	public Passenger(int num, Request request, int status, int budget){
 		this.num = num;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.startPoint = startPoint;
-		this.endPoint = endPoint;
+		this.request = request;
+		this.status = status;
+		this.budget = budget;
 	}
 	public Passenger(int num){
 		this.num = num;
-		this.startTime = (int)(Math.random() * 100);
-		this.endTime = this.startTime + (int)(Math.random() * (100 - this.startTime)) / 2;
-		this.startPoint = new Pos();
-		startPoint.setOwner(this.num);
-		startPoint.setFlag(0);
-		this.endPoint = new Pos();
-		endPoint.setOwner(this.num);
-		endPoint.setFlag(1);
+		request = new Request(num);
+		status = 0;
 	}
 }

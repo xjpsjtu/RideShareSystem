@@ -1,5 +1,8 @@
 package rideshare;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Process {
 	int n;
 	int v;
@@ -19,6 +22,9 @@ public class Process {
 		}
 	}
 	
+	public ArrayList<Double> neNeigh (List<Double> locations, List<Request> requests, List<Double> budgets) {
+		return null;
+	}
 	
 	
 }
