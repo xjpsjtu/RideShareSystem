@@ -3,6 +3,7 @@ package rideshare;
 import java.util.ArrayList;
 
 public class Tool {
+	public static final double v = 10;
 	public static double caldis(Pos a, Pos b){
 		double x1 = a.x;
 		double y1 = a.y;
@@ -10,6 +11,11 @@ public class Tool {
 		double y2 = b.y;
 		double dis = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 		return dis;
+	}
+	
+	public static double calt(Pos a, Pos b) {
+		double dis = Tool.caldis(a , b);
+		return dis / Tool.v;
 	}
 	
 	public static Pos drive(Schedule schedule, int t0, int t1){
@@ -36,5 +42,22 @@ public class Tool {
 			}
 		}
 		return locs.get(locs.size() - 1);
+	}
+	
+	//寻找距离pos最近的没有访问过的，可以访问的位置
+	public static int findNearest(Pos ori, Pos[] poses, boolean visited[], boolean taken[]) {
+		double minDis = Integer.MAX_VALUE;
+		int minindex = -1;
+		for(int i = 0; i < poses.length; i++){
+			if(visited[i])continue;
+			if(!taken[i])continue;
+			Pos pos = poses[i];
+			double dis = Tool.caldis(ori, pos);
+			if(dis <= minDis) {
+				minDis = dis;
+				minindex = i;
+			}
+		}
+		return minindex;
 	}
 }

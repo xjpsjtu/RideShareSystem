@@ -14,8 +14,8 @@ public class Schedule {
 	public void addPassenger(Passenger[] ps){
 		for(int i = 0; i < ps.length; i++){
 			Passenger p = ps[i];
-			locs.add(p.startPoint);
-			locs.add(p.endPoint);
+			locs.add(p.request.startPoint);
+			locs.add(p.request.endPoint);
 		}
 	}
 	public void dropPassenger(Pos pos){
