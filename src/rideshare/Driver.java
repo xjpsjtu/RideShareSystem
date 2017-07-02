@@ -1,23 +1,22 @@
 package rideshare;
 
 public class Driver {
+	int num;
 	Pos loc;  //current position
 	Schedule schedule; //current maintain schedule
 	int cap; //maximum capability
-	int v;
+
 	
-	public Driver(int cap, int v){
+	public Driver(int cap, int num){
 		this.loc = new Pos();
-		this.cap = cap;
-		this.v = v;
-		
+		this.cap = cap;	
+		this.num = num;
 	}
 	
-	//添加乘客
 	public void addPassenger(Passenger[] ps){
 		schedule.addPassenger(ps);
 	}
-	//乘客下车
+
 	public void dropPassenger(Pos pos){
 		schedule.dropPassenger(pos);
 	}

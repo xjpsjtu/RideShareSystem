@@ -11,8 +11,8 @@ public class Pos {
 		this.y = y;
 	}
 	public Pos(){
-		this.x = Math.random() * 100;
-		this.y = Math.random() * 100;
+		this.x = Math.random() * Tool.dis;
+		this.y = Math.random() * Tool.dis;
 	}
 	public Pos(int owner, int flag, double x, double y){
 		this.owner = owner;

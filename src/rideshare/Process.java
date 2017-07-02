@@ -8,7 +8,7 @@ public class Process {
 	int cap;
 	int T;
 	
-	public Process(int n, int cap, int T, int v){
+	public void Process(int n, int cap, int T, int v){
 		this.n = n;
 		this.cap = cap;
 		this.T = T;
@@ -102,5 +102,29 @@ public class Process {
 		return ans;
 	}
 	
+	/*
+	 * @param
+	 * n:乘客总人数
+	 * m:司机总人数
+	 * cap:每辆车载客量
+	 * ttime:过程总时间 
+	 */
+	public int liquity_random(int n, int m, int cap) {
+		int liquity = 0;
+		Passenger[] pg = new Passenger[n];
+		for(int i = 0; i < pg.length; i++) {
+			pg[i] = new Passenger(i);
+		}
+		Driver[] dr = new Driver[m];
+		for(int i = 0; i < dr.length; i++) {
+			dr[i] = new Driver(cap, i);
+		}
+		
+		for(int i = 1; i <= Tool.time; i++) {
+			
+		}
+		
+		return liquity;
+	}
 	
 }

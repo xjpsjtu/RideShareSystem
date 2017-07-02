@@ -3,7 +3,9 @@ package rideshare;
 import java.util.ArrayList;
 
 public class Tool {
-	public static final double v = 10;
+	public static final double v = 20;
+	public static final double dis = 50000;
+	public static final int time = 3600;
 	public static double caldis(Pos a, Pos b){
 		double x1 = a.x;
 		double y1 = a.y;
@@ -21,7 +23,7 @@ public class Tool {
 	public static Pos drive(Schedule schedule, int t0, int t1){
 		ArrayList<Pos> locs = schedule.locs;
 		Driver d = schedule.driver;
-		double length = d.v * (t1 - t0);
+		double length = Tool.v * (t1 - t0);
 		double tmplength = 0;
 		Pos cur = d.loc;
 		for(int i = 0; i < locs.size(); i++){
