@@ -11,13 +11,18 @@ public class Driver {
 		this.loc = new Pos();
 		this.cap = cap;	
 		this.num = num;
+		this.schedule = new Schedule(this);
 	}
 	
-	public void addPassenger(Passenger[] ps){
+	public void addPassengers(Passenger[] ps){
+		schedule.addPassengers(ps);
+	}
+	
+	public void addPassenger(Passenger ps) {
 		schedule.addPassenger(ps);
 	}
 
-	public void dropPassenger(Pos pos){
-		schedule.dropPassenger(pos);
+	public void dropPassenger(Pos pos, Passenger[] pr){
+		schedule.dropPassenger(pos,pr);
 	}
 }

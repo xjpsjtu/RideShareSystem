@@ -20,7 +20,9 @@ public class Tool {
 		return dis / Tool.v;
 	}
 	
-	public static Pos drive(Schedule schedule, int t0, int t1){
+	public static Pos drive(Driver driver, int t0, int t1, Passenger[] pg){
+		Schedule schedule = driver.schedule;
+		if(schedule.locs.size() == 0) return driver.loc;
 		ArrayList<Pos> locs = schedule.locs;
 		Driver d = schedule.driver;
 		double length = Tool.v * (t1 - t0);
@@ -32,7 +34,7 @@ public class Tool {
 			if(tmplength + dis <= length){
 				tmplength += dis;
 				cur = pos;
-				d.dropPassenger(pos);
+				d.dropPassenger(pos, pg);
 			}else{
 				double dif = length - tmplength;
 				double ratio = dif / dis;

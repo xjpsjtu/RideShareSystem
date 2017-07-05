@@ -1,7 +1,7 @@
 package rideshare;
 
 public class Pos {
-	int owner;
+	int owner; //owner的num
 	int flag; //flag == 0 origin  flag == 1 end
 	double x;
 	double y;
@@ -27,5 +27,12 @@ public class Pos {
 
 	public void setFlag(int flag){
 		this.flag = flag;
+	}
+	public Passenger getOwner(Passenger[] pr) {
+		return pr[owner];
+	}
+	
+	public String toString(){
+		return "(" + x + "," + y + ") of owner: " + owner;
 	}
 }

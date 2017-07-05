@@ -1,5 +1,7 @@
 package rideshare;
 
+import java.util.ArrayList;
+
 public class Process {
 	int n;
 	int v;
@@ -26,9 +28,10 @@ public class Process {
 	 * requests[0]-requests[u-1]没有起点
 	 */
 	public Pos[] neNeigh(Request[] requests, double[] remBudget, int u, Pos driverStart, double startT) {
+		
+		int v = requests.length - u - 1;
 		Pos[] ans = new Pos[u + 2 * v + 3];
 		double[] t = new double[u + 2 * v + 3];
-		int v = requests.length - u - 1;
 		double[] dis = new double[u + v + 1];
 		for(int i = 0; i < dis.length; i++) {
 			Request request = requests[i];
@@ -114,17 +117,55 @@ public class Process {
 		Passenger[] pg = new Passenger[n];
 		for(int i = 0; i < pg.length; i++) {
 			pg[i] = new Passenger(i);
+			System.out.println(pg[i].request);
 		}
 		Driver[] dr = new Driver[m];
 		for(int i = 0; i < dr.length; i++) {
 			dr[i] = new Driver(cap, i);
 		}
 		
-		for(int i = 1; i <= Tool.time; i++) {
-			
+		for(int t = 1; t <= Tool.time; t++) {
+			//更新车辆位置信息
+			for(int di = 0; di < dr.length; di++) {
+				dr[di].loc = Tool.drive(dr[di], t - 1, t, pg);
+			}
+			for(int pi = 0; pi < pg.length; pi++) {
+				ArrayList<Driver> list = new ArrayList<Driver>();
+				if(pg[pi].status == 0 && pg[pi].request.declaretime == t) {
+					for(int di = 0; di < dr.length; di++) {
+						Request[] requests = dr[di].schedule.getRequestsAddNewPassenger(pg[pi], pg);
+						double[] rembudget = dr[di].schedule.getRemainBudget(pg[pi], pg);
+						int u = dr[di].schedule.getU(pg[pi], pg);
+						Pos pos = dr[di].loc;
+						double curt = t;
+						if(neNeigh(requests, rembudget, u, pos, curt) != null){
+							list.add(dr[di]);
+						}
+					}
+				}
+				
+				int size = list.size();
+				if(size == 0)continue;
+				int ssize = (int)(Math.random() * size);
+				Driver driver = list.get(ssize);
+				driver.addPassenger(pg[pi]);
+				pg[pi].status = 1;
+				Schedule schedule = new Schedule(driver);
+				Pos[] poss = neNeigh(driver.schedule.getRequestsAddNewPassenger(pg[pi], pg), driver.schedule.getRemainBudget(pg[pi], pg), driver.schedule.getU(pg[pi], pg), driver.loc, t);
+				for(int i = 0; i < poss.length; i++){
+					schedule.locs.add(poss[i]);
+				}
+				driver.schedule = schedule;
+				liquity++;
+			}
 		}
 		
 		return liquity;
+	}
+	
+	public static void main(String[] args) {
+		Process p = new Process();
+		System.out.println(p.liquity_random(10, 3, 2));
 	}
 	
 }
