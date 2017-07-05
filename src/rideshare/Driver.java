@@ -25,4 +25,7 @@ public class Driver {
 	public void dropPassenger(Pos pos, Passenger[] pr){
 		schedule.dropPassenger(pos,pr);
 	}
+	public String toString(){
+		return "Driver: " + num + "," + loc + " cap: " + cap;
+	}
 }

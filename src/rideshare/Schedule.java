@@ -61,7 +61,11 @@ public class Schedule {
 				rlist.add(pa.request);
 			}
 		}
-		return (Request[])rlist.toArray();
+		Request[] rrr = new Request[rlist.size()];
+		for(int i = 0; i < rlist.size(); i++){
+			rrr[i] = rlist.get(i);
+		}
+		return rrr;
 	}
 	
 	public double[] getRemainBudget(Passenger p, Passenger[] pr) {

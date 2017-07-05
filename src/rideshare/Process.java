@@ -29,6 +29,20 @@ public class Process {
 	 */
 	public Pos[] neNeigh(Request[] requests, double[] remBudget, int u, Pos driverStart, double startT) {
 		
+		if(requests.length == 1){
+			System.out.println("xxxxxxx");
+			System.out.println(driverStart + "," + requests[0].startPoint + "," + requests[0].endPoint);
+			double t = (Tool.caldis(driverStart, requests[0].startPoint) + Tool.caldis(requests[0].startPoint, requests[0].endPoint)) / Tool.v;
+			System.out.println(t);
+			if(startT + t <= requests[0].endTime){
+				Pos[] pp = new Pos[2];
+				pp[0] = requests[0].startPoint;
+				pp[1] = requests[0].endPoint;
+				System.out.println(pp[0] + "," + pp[1]);
+				return pp;
+			}
+		}
+		
 		int v = requests.length - u - 1;
 		Pos[] ans = new Pos[u + 2 * v + 3];
 		double[] t = new double[u + 2 * v + 3];
@@ -139,19 +153,23 @@ public class Process {
 						Pos pos = dr[di].loc;
 						double curt = t;
 						if(neNeigh(requests, rembudget, u, pos, curt) != null){
+							System.out.println("Gotten by " + dr[di]);
 							list.add(dr[di]);
 						}
 					}
 				}
 				
 				int size = list.size();
+				//debug
 				if(size == 0)continue;
 				int ssize = (int)(Math.random() * size);
+				System.out.println(ssize);
 				Driver driver = list.get(ssize);
 				driver.addPassenger(pg[pi]);
 				pg[pi].status = 1;
 				Schedule schedule = new Schedule(driver);
 				Pos[] poss = neNeigh(driver.schedule.getRequestsAddNewPassenger(pg[pi], pg), driver.schedule.getRemainBudget(pg[pi], pg), driver.schedule.getU(pg[pi], pg), driver.loc, t);
+				System.out.println("new psssssss" + poss);
 				for(int i = 0; i < poss.length; i++){
 					schedule.locs.add(poss[i]);
 				}
