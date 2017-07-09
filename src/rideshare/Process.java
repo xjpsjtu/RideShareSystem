@@ -165,8 +165,7 @@ public class Process {
 				int ssize = (int)(Math.random() * size);
 				System.out.println(ssize);
 				Driver driver = list.get(ssize);
-				driver.addPassenger(pg[pi]);
-				pg[pi].status = 1;
+				System.out.println("Choose " + driver);
 				Schedule schedule = new Schedule(driver);
 				Pos[] poss = neNeigh(driver.schedule.getRequestsAddNewPassenger(pg[pi], pg), driver.schedule.getRemainBudget(pg[pi], pg), driver.schedule.getU(pg[pi], pg), driver.loc, t);
 				System.out.println("new psssssss" + poss);
@@ -174,6 +173,8 @@ public class Process {
 					schedule.locs.add(poss[i]);
 				}
 				driver.schedule = schedule;
+				driver.addPassenger(pg[pi]);
+				pg[pi].status = 1;
 				liquity++;
 			}
 		}

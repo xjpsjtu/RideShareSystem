@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Tool {
 	public static final double v = 20;
-	public static final double dis = 50000;
+	public static final double dis = 10000;
 	public static final int time = 3600;
 	public static double caldis(Pos a, Pos b){
 		double x1 = a.x;
