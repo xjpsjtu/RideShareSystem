@@ -6,13 +6,15 @@ public class Pos {
 	double x;
 	double y;
 	
-	public Pos(double x, double y){
+	public Pos(double x, double y, int owner){
 		this.x = x;
 		this.y = y;
+		this.owner = owner;
 	}
-	public Pos(){
+	public Pos(int owner){
 		this.x = Math.random() * Tool.dis;
 		this.y = Math.random() * Tool.dis;
+		this.owner = owner;
 	}
 	public Pos(int owner, int flag, double x, double y){
 		this.owner = owner;

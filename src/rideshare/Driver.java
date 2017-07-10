@@ -8,7 +8,7 @@ public class Driver {
 
 	
 	public Driver(int cap, int num){
-		this.loc = new Pos();
+		this.loc = new Pos(num);
 		this.cap = cap;	
 		this.num = num;
 		this.schedule = new Schedule(this);

@@ -31,14 +31,14 @@ public class Process {
 		
 		if(requests.length == 1){
 			System.out.println("xxxxxxx");
-			System.out.println(driverStart + "," + requests[0].startPoint + "," + requests[0].endPoint);
+//			System.out.println(driverStart + "," + requests[0].startPoint + "," + requests[0].endPoint);
 			double t = (Tool.caldis(driverStart, requests[0].startPoint) + Tool.caldis(requests[0].startPoint, requests[0].endPoint)) / Tool.v;
-			System.out.println(t);
+//			System.out.println(t);
 			if(startT + t <= requests[0].endTime){
 				Pos[] pp = new Pos[2];
 				pp[0] = requests[0].startPoint;
 				pp[1] = requests[0].endPoint;
-				System.out.println(pp[0] + "," + pp[1]);
+//				System.out.println(pp[0] + "," + pp[1]);
 				return pp;
 			}
 		}
@@ -139,10 +139,14 @@ public class Process {
 		}
 		
 		for(int t = 1; t <= Tool.time; t++) {
+			System.out.println("======= time " + t + "=======");
 			//更新车辆位置信息
+			System.out.println("======= start update driver locs =======");
 			for(int di = 0; di < dr.length; di++) {
+				System.out.println("update the information of driver: " + di);
 				dr[di].loc = Tool.drive(dr[di], t - 1, t, pg);
 			}
+			System.out.println("finish of updating");
 			for(int pi = 0; pi < pg.length; pi++) {
 				ArrayList<Driver> list = new ArrayList<Driver>();
 				if(pg[pi].status == 0 && pg[pi].request.declaretime == t) {
@@ -157,25 +161,28 @@ public class Process {
 							list.add(dr[di]);
 						}
 					}
+					
+					int size = list.size();
+					//debug
+					if(size == 0)continue;
+					int ssize = (int)(Math.random() * size);
+					System.out.println(ssize);
+					Driver driver = list.get(ssize);
+					System.out.println("Choose " + driver);
+					Schedule schedule = new Schedule(driver);
+					Pos[] poss = neNeigh(driver.schedule.getRequestsAddNewPassenger(pg[pi], pg), driver.schedule.getRemainBudget(pg[pi], pg), driver.schedule.getU(pg[pi], pg), driver.loc, t);
+					System.out.println("new psssssss" + poss);
+					for(int i = 0; i < poss.length; i++){
+						schedule.locs.add(poss[i]);
+					}
+					driver.schedule = schedule;
+					driver.addPassenger(pg[pi]);
+					pg[pi].status = 1;
+					liquity++;
+					
 				}
 				
-				int size = list.size();
-				//debug
-				if(size == 0)continue;
-				int ssize = (int)(Math.random() * size);
-				System.out.println(ssize);
-				Driver driver = list.get(ssize);
-				System.out.println("Choose " + driver);
-				Schedule schedule = new Schedule(driver);
-				Pos[] poss = neNeigh(driver.schedule.getRequestsAddNewPassenger(pg[pi], pg), driver.schedule.getRemainBudget(pg[pi], pg), driver.schedule.getU(pg[pi], pg), driver.loc, t);
-				System.out.println("new psssssss" + poss);
-				for(int i = 0; i < poss.length; i++){
-					schedule.locs.add(poss[i]);
-				}
-				driver.schedule = schedule;
-				driver.addPassenger(pg[pi]);
-				pg[pi].status = 1;
-				liquity++;
+				
 			}
 		}
 		
@@ -184,7 +191,7 @@ public class Process {
 	
 	public static void main(String[] args) {
 		Process p = new Process();
-		System.out.println(p.liquity_random(10, 3, 2));
+		System.out.println(p.liquity_random(100, 10, 4));
 	}
 	
 }

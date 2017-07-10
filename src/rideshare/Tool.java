@@ -22,7 +22,10 @@ public class Tool {
 	
 	public static Pos drive(Driver driver, int t0, int t1, Passenger[] pg){
 		Schedule schedule = driver.schedule;
-		if(schedule.locs.size() == 0) return driver.loc;
+		if(schedule.locs.size() == 0) {
+			System.out.println("Noooooo drive");
+			return driver.loc;
+		}
 		ArrayList<Pos> locs = schedule.locs;
 		Driver d = schedule.driver;
 		double length = Tool.v * (t1 - t0);
@@ -45,7 +48,9 @@ public class Tool {
 				return d.loc;
 			}
 		}
-		return locs.get(locs.size() - 1);
+		if(locs.size() == 0) {
+			return driver.loc;
+		}else return locs.get(locs.size() - 1);
 	}
 	
 	//寻找距离pos最近的没有访问过的，可以访问的位置

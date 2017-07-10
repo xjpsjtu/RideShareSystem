@@ -23,10 +23,10 @@ public class Request {
 		this.startTime = (int)(Math.random() * Tool.time) / 2;
 		this.endTime = this.startTime + (int)(Math.random() * (Tool.time - this.startTime)) / 3;
 		double dis = (endTime - startTime) * Tool.v / 10;
-		this.startPoint = new Pos();
+		this.startPoint = new Pos(num);
 		startPoint.setOwner(this.num);
 		startPoint.setFlag(0);
-		this.endPoint = new Pos(startPoint.x + Math.random() * dis, startPoint.y + Math.random() * dis);
+		this.endPoint = new Pos(startPoint.x + Math.random() * dis, startPoint.y + Math.random() * dis, num);
 		endPoint.setOwner(this.num);
 		endPoint.setFlag(1);
 		declaretime = (int)(Math.random() * startTime);
