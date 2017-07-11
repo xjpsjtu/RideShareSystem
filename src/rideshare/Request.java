@@ -20,7 +20,7 @@ public class Request {
 	}
 	public Request(int num) {
 		this.num = num;
-		this.startTime = (int)(Math.random() * Tool.time) / 2;
+		this.startTime = (int)(Math.random() * Tool.time);
 		this.endTime = this.startTime + (int)(Math.random() * (Tool.time - this.startTime)) / 3;
 		double dis = (endTime - startTime) * Tool.v / 10;
 		this.startPoint = new Pos(num);

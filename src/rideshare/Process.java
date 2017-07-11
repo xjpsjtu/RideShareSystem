@@ -1,5 +1,11 @@
 package rideshare;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Process {
@@ -23,9 +29,9 @@ public class Process {
 	
 	
 	/*
-	 * requests[u]为新请求
-	 * requests[u+1]-requests[u+v]为原来请求
-	 * requests[0]-requests[u-1]没有起点
+	 * requests[u]涓烘柊璇锋眰
+	 * requests[u+1]-requests[u+v]涓哄師鏉ヨ姹�
+	 * requests[0]-requests[u-1]娌℃湁璧风偣
 	 */
 	public Pos[] neNeigh(Request[] requests, double[] remBudget, int u, Pos driverStart, double startT) {
 		
@@ -54,7 +60,7 @@ public class Process {
 			double dist = Tool.caldis(start, end);
 			dis[i] = dist;
 		}
-		//加上汽车初始位置，一共u + 2v + 3个位置
+		//鍔犱笂姹借溅鍒濆浣嶇疆锛屼竴鍏眜 + 2v + 3涓綅缃�
 		Pos[] poses = new Pos[u + 2 * v + 3];
 		poses[0] = driverStart;
 		for(int i = 0; i < u; i++) {
@@ -70,11 +76,11 @@ public class Process {
 		}
 		
 		
-		//表示某个位置有没有被访问过
+		//琛ㄧず鏌愪釜浣嶇疆鏈夋病鏈夎璁块棶杩�
 		boolean[] visited = new boolean[u + 2 * v + 3];
-		//表示位置对应的某请求是否已上车
+		//琛ㄧず浣嶇疆瀵瑰簲鐨勬煇璇锋眰鏄惁宸蹭笂杞�
 		boolean[] taken = new boolean[u + 2 * v + 3];
-		//表示某请求是否已完成
+		//琛ㄧず鏌愯姹傛槸鍚﹀凡瀹屾垚
 		boolean[] active = new boolean[u + v + 1];
 		for(int i = 0; i < visited.length; i++){
 			visited[i] = false;
@@ -121,10 +127,10 @@ public class Process {
 	
 	/*
 	 * @param
-	 * n:乘客总人数
-	 * m:司机总人数
-	 * cap:每辆车载客量
-	 * ttime:过程总时间 
+	 * n:涔樺鎬讳汉鏁�
+	 * m:鍙告満鎬讳汉鏁�
+	 * cap:姣忚締杞﹁浇瀹㈤噺
+	 * ttime:杩囩▼鎬绘椂闂� 
 	 */
 	public int liquity_random(int n, int m, int cap) {
 		int liquity = 0;
@@ -140,7 +146,7 @@ public class Process {
 		
 		for(int t = 1; t <= Tool.time; t++) {
 			System.out.println("======= time " + t + "=======");
-			//更新车辆位置信息
+			//鏇存柊杞﹁締浣嶇疆淇℃伅
 			System.out.println("======= start update driver locs =======");
 			for(int di = 0; di < dr.length; di++) {
 				System.out.println("update the information of driver: " + di);
@@ -189,9 +195,87 @@ public class Process {
 		return liquity;
 	}
 	
+	public int liquity_order(int n, int m, int cap) {
+		int liquity = 0;
+		Passenger[] pg = new Passenger[n];
+		for(int i = 0; i < pg.length; i++) {
+			pg[i] = new Passenger(i);
+			System.out.println(pg[i].request);
+		}
+		Driver[] dr = new Driver[m];
+		for(int i = 0; i < dr.length; i++) {
+			dr[i] = new Driver(cap, i);
+		}
+		
+		for(int t = 1; t <= Tool.time; t++) {
+			System.out.println("======= time " + t + "=======");
+			//鏇存柊杞﹁締浣嶇疆淇℃伅
+			System.out.println("======= start update driver locs =======");
+			for(int di = 0; di < dr.length; di++) {
+				System.out.println("update the information of driver: " + di);
+				dr[di].loc = Tool.drive(dr[di], t - 1, t, pg);
+			}
+			System.out.println("finish of updating");
+			for(int pi = 0; pi < pg.length; pi++) {
+				if(pg[pi].status == 0 && pg[pi].request.declaretime == t) {
+					for(int di = 0; di < dr.length; di++) {
+						Request[] requests = dr[di].schedule.getRequestsAddNewPassenger(pg[pi], pg);
+						double[] rembudget = dr[di].schedule.getRemainBudget(pg[pi], pg);
+						int u = dr[di].schedule.getU(pg[pi], pg);
+						Pos pos = dr[di].loc;
+						double curt = t;
+						if(neNeigh(requests, rembudget, u, pos, curt) != null){
+//							System.out.println("Gotten by " + dr[di]);
+//							list.add(dr[di]);
+							Driver driver = dr[di];
+							System.out.println("Choose " + driver);
+							Schedule schedule = new Schedule(driver);
+							Pos[] poss = neNeigh(driver.schedule.getRequestsAddNewPassenger(pg[pi], pg), driver.schedule.getRemainBudget(pg[pi], pg), driver.schedule.getU(pg[pi], pg), driver.loc, t);
+							System.out.println("new psssssss" + poss);
+							for(int i = 0; i < poss.length; i++){
+								schedule.locs.add(poss[i]);
+							}
+							driver.schedule = schedule;
+							driver.addPassenger(pg[pi]);
+							pg[pi].status = 1;
+							liquity++;
+							break;
+						}
+					}
+					
+				}
+				
+				
+			}
+		}
+		
+		return liquity;
+	}
+	
+	
 	public static void main(String[] args) {
 		Process p = new Process();
-		System.out.println(p.liquity_random(100, 10, 4));
+		for(int lam = 3; lam <= 10; lam += 2) {
+			String filename = lam + ".txt";
+			File file = new File(filename);
+			for(int i = 1000; i < 10000; i += 1000) {
+				try {
+					FileOutputStream fs = new FileOutputStream(file);
+					PrintStream ps = new PrintStream(fs);
+					int a = p.liquity_random(i, 50, lam);
+//					int b = p.liquity_order(i, 50, lam);
+					ps.println(a);
+					ps.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			}
+		}
+		int a = p.liquity_random(6000, 50, 9);
+		int b = p.liquity_order(6000, 50, 9);
+		System.out.println(a);
+		System.out.println(b);
 	}
 	
 }
