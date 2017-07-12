@@ -256,21 +256,21 @@ public class Process {
 	public static void main(String[] args) {
 		Process p = new Process();
 		for(int lam = 3; lam <= 10; lam += 2) {
-			String filename = lam + ".txt";
+			String filename = lam + "_4.txt";
 			File file = new File(filename);
-			for(int i = 1000; i < 10000; i += 1000) {
-				try {
-					FileOutputStream fs = new FileOutputStream(file);
-					PrintStream ps = new PrintStream(fs);
-					int a = p.liquity_random(i, 50, lam);
-//					int b = p.liquity_order(i, 50, lam);
-					ps.println(a);
-					ps.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+			FileOutputStream fs = null;
+			try {
+				fs = new FileOutputStream(file);
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
 			}
+			PrintStream ps = new PrintStream(fs);
+			for(int i = 1000; i < 10000; i += 1000) {
+				int a = p.liquity_random(i, 250, lam);
+				ps.println(a + "  " + i/(lam + 1));
+				 
+			}
+			ps.close();
 		}
 		int a = p.liquity_random(6000, 50, 9);
 		int b = p.liquity_order(6000, 50, 9);
