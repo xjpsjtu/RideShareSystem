@@ -1,5 +1,9 @@
 package rideshare;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -74,10 +78,11 @@ public class Tool {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public int phi(int n) {
+	public double phi(int n) {
 		Request[] requests = new Request[n];
 		for(int i = 0; i < n; i++) {
 			requests[i] = new Request(i);
+//			System.out.println(requests[i]);
 		}
 		java.util.Arrays.sort(requests, new RequestComparator());
 
@@ -90,7 +95,9 @@ public class Tool {
 		bools[0] = true;
 		double disone = 0;
 		disone = disone + Tool.caldis(requests[0].startPoint, requests[0].endPoint);
+//		System.out.println(disone);
 		for(int i = 0; i < n - 1; i++) {
+//			System.out.println(i + ": disone is: " + disone);
 			int minindex = -1;
 			double minDis = Integer.MAX_VALUE;
 			for(int j = 0; j < n; j++) {
@@ -107,7 +114,7 @@ public class Tool {
 			disone += Tool.caldis(requests[minindex].startPoint, requests[minindex].endPoint);
 			curpos = requests[minindex].endPoint;
 		}
-		
+//		System.out.println(disone);
 		Pos[] poss = new Pos[2*n];
 		int m = 0;
 		for(int i = 0; i < n; i++) {
@@ -148,11 +155,11 @@ public class Tool {
 			distwo += Tool.caldis(curpos, poss[minindex]);
 			curpos = poss[minindex];
 		}
+//		System.out.println(distwo);
 		
 		
 		
-		
-		return 0;
+		return disone - distwo;
 	}
 	
 	class RequestComparator implements Comparator{
@@ -170,13 +177,30 @@ public class Tool {
 				return -1;
 			} else return 1;
 		}
+		
 	}
 	
 	public static void main(String[] args) {
 		Tool t = new Tool();
-		for(int i = 10; i < 100; i+=10) {
-			System.out.println(t.phi(i));
+//		System.out.println(t.phi(3));
+		String filename = "phi.txt";
+		File file = new File(filename);
+		FileOutputStream fs = null;
+		try {
+			fs = new FileOutputStream(file);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
 		}
+		PrintStream ps = new PrintStream(fs);
+		for(int i = 10; i < 500; i+=10) {
+			double s = 0;
+			for(int j = 1; j <= 100; j++) {
+				s += t.phi(i);
+			}
+			s /= 100;
+			ps.println(i + " " + s/10000);
+		}
+		ps.close();
 	}
 	
 }

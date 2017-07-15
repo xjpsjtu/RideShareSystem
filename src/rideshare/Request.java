@@ -26,7 +26,8 @@ public class Request {
 		this.startPoint = new Pos(num);
 		startPoint.setOwner(this.num);
 		startPoint.setFlag(0);
-		this.endPoint = new Pos(startPoint.x + Math.random() * dis, startPoint.y + Math.random() * dis, num);
+//		this.endPoint = new Pos(startPoint.x + Math.random() * dis, startPoint.y + Math.random() * dis, num);
+		this.endPoint = new Pos(num);
 		endPoint.setOwner(this.num);
 		endPoint.setFlag(1);
 		declaretime = (int)(Math.random() * startTime);
